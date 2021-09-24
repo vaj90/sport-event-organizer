@@ -1,0 +1,23 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Registration
+@{
+    ViewData["Title"] = "Delete Registration";
+}
+<h2>Delete Registration</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="registration" asp-action="deleteconfirm" method="post">
+            <input name="id" value="@Model.RegistrationId" type="hidden" />
+            <div class="mb-3 row">
+                <div class="col-md-12">
+                    <p>Do you really want to delete <b>@Model.Product.Name</b> to <b>@string.Format("{0} {1}", Model.Customer.FirstName, Model.Customer.LastName)</b>?</p>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-md-12 d-md-flex justify-content-md-end gap-2">
+                    <button type="submit" class="btn btn-primary mr-2">Yes</button>
+                    <a asp-controller="registration" asp-action="index" asp-route-id="@Model.CustomerId" class="btn btn-primary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

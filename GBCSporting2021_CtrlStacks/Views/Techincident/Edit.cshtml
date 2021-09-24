@@ -1,0 +1,81 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Incident
+@{
+    var action = (string)ViewBag.Action;
+    ViewData["Title"] = "Edit Technician";
+
+    if (Model.DateClosed == new DateTime()) Model.DateClosed = DateTime.Now;
+}
+<h2>@action Incident</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-controller="techincident" asp-action="save" autocomplete="off">
+            <input name="id" value="@Model.IncidentId" type="hidden" />
+            <div class="mb-3 row">
+                <label for="TechnicianId" class="col-md-2 col-form-label">Technician</label>
+                <div class="col-md-10">
+                    <label>@Model.Technician.Name</label>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="CustomerId" class="col-md-2 col-form-label">Customer</label>
+                <div class="col-md-10">
+                    <label>@Model.Customer.FirstName @Model.Customer.LastName</label>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="ProductId" class="col-md-2 col-form-label">Product</label>
+                <div class="col-md-10">
+                    <label>@Model.Product.Name</label>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Title" class="col-md-2 col-form-label">Title</label>
+                <div class="col-md-10">
+                    <label>@Model.Title</label>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="DateOpened" class="col-md-2 col-form-label">Date Opened</label>
+                <div class="col-md-10">
+                    <label>@string.Format("{0:MM/dd/yyyy hh:mm:ss tt}", Model.DateOpened)</label>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Description" class="col-md-2 col-form-label">Description</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" asp-for="Description">@Model.Description</textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="DateClosed" class="col-md-2 col-form-label">Date Closed</label>
+                <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control" asp-for="DateClosed" value="@string.Format("{0:dd/MM/yyyy hh:ss tt}", Model.DateClosed).ToUpper()">
+                    <span asp-validation-for="DateClosed" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary mr-2">Save</button>
+                    <a class="btn btn-primary" asp-controller="techincident" asp-action="list" asp-route-id="@Model.TechnicianId">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section styles{
+    <link rel="stylesheet" href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+}
+@section scripts{
+    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#DateClosed').datetimepicker({
+                format: "dd/mm/yyyy hh:ii P",
+                autoclose: true,
+                todayBtn: true,
+                showMeridian: true
+            });
+        });
+    </script>
+}

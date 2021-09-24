@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Customer>
+@{
+    ViewData["Title"] = "Registrations";
+    var customers = Model.Select(x => new SelectListItem
+    {
+        Text = x.FirstName + " " + x.LastName,
+        Value = x.CustomerId + ""
+    }).ToList();
+}
+<h2>Get Customer</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-2 row">
+            <div class="col-md-12 mb-2">
+                <select name="id" id="customerid" class="form-select" asp-items="@(new SelectList(customers, "Value", "Text"))" value="">
+                    <option value="">---Please select customer---</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-2 row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary btn-select-customer mr-2">Select</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btn-select-customer").click(function () {
+                var customer = $("#customerid").val();
+                if (customer != "") {
+                    window.location.href = "/registrations?id=" + customer;
+                }
+                else {
+                    $("#customerid").addClass("input-validation-error");
+                    $("#customerid").next().addClass("field-validation-error");
+                    $(".field-validation-error").html("Customer is required");
+                }
+            })
+        });
+    </script>
+}

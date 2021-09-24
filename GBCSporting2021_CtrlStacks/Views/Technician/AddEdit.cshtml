@@ -1,0 +1,48 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Technician
+@{
+    var action = (string)ViewBag.Action;
+    ViewData["Title"] = action + " Technician";
+}
+<h2>@action Technician</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-controller="technician" asp-action="save" autocomplete="off">
+            <input asp-for="TechnicianId" value="@Model.TechnicianId" type="hidden" />
+            <div class="mb-3 row">
+                <label for="Name" class="col-md-2 col-form-label">Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" asp-for="Name" value="@Model.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Email" class="col-md-2 col-form-label">Email</label>
+                <div class="col-md-10">
+                    <input type="email" class="form-control" asp-for="Email" value="@Model.Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Phone" class="col-md-2 col-form-label">Phone</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" asp-for="Phone" value="@Model.Phone">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary mr-2">Save</button>
+                    <a class="btn btn-primary" asp-controller="technician" asp-action="list">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+    <script src="~/lib/jquery-mask/jquery.mask.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Phone').mask('000-000-0000');
+        });
+    </script>
+}

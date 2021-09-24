@@ -1,0 +1,38 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Product
+@{
+    ViewData["Title"] = "Product Details";
+}
+<h2>Product Details</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="list-group">
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Code:</span>
+                    <span class="col-md-10">@Model.Code</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Name:</span>
+                    <span class="col-md-10">@Model.Name</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Yearly Price:</span>
+                    <span class="col-md-10">$@Model.YearlyPrice</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Release Date:</span>
+                    <span class="col-md-10">@string.Format("{0:MMM dd, yyyy}", Model.ReleaseDate)</span>
+                </p>
+            </div>
+        </div>
+        <div class="mt-2 d-md-flex justify-content-md-end">
+            <a asp-controller="product" asp-action="list" class="btn btn-primary">Back</a>
+        </div>
+    </div>
+</div>

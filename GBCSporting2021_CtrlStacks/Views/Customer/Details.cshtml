@@ -1,0 +1,64 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Customer
+@{
+    ViewData["Title"] = "Customer Details";
+    var model = Model;
+    var fullName = model.FirstName + " " + model.LastName;
+}
+<h2>Customer Details</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="list-group">
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Name:</span>
+                    <span class="col-md-10">@fullName</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Address:</span>
+                    <span class="col-md-10">@Model.Address</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">City:</span>
+                    <span class="col-md-10">@Model.City</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">State:</span>
+                    <span class="col-md-10">@Model.State</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Postal Code:</span>
+                    <span class="col-md-10">@Model.PostalCode</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Country:</span>
+                    <span class="col-md-10">@Model.Country.</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Email:</span>
+                    <span class="col-md-10">@Model.Email</span>
+                </p>
+            </div>
+            <div class="list-group-item">
+                <p class="row">
+                    <span class="col-md-2">Phone:</span>
+                    <span class="col-md-10">@Model.Phone</span>
+                </p>
+            </div>
+        </div>
+        <div class="mt-2 d-md-flex justify-content-md-end">
+            <a asp-controller="customer" asp-action="list" class="btn btn-primary">Back</a>
+        </div>
+    </div>
+</div>

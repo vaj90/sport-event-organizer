@@ -1,0 +1,74 @@
+﻿@using PagedList.Core
+@using PagedList.Core.Mvc
+@model IPagedList<Product>
+@{
+    ViewData["Title"] = "Product Manager";
+    var msgSuccess = (string)TempData["Message"];
+}
+@if (!string.IsNullOrEmpty(msgSuccess))
+{
+    <div class="msg-temp-success">
+        <h1 class="p-2">@msgSuccess</h1>
+    </div>
+}
+<h2>Product Manager</h2>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Yearly Price</th>
+                    <th>Release Date</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var product in Model)
+                    {
+                        <tr>
+                            <td><p>@product.Code</p></td>
+                            <td><p>@product.Name</p></td>
+                            <td><p>$@product.YearlyPrice</p></td>
+                            <td><p>@string.Format("{0:MM/dd/yyyy}", product.ReleaseDate)</p></td>
+                            <td> <a class="btn btn-primary mr-2" asp-controller="product" asp-action="edit" asp-route-id="@product.ProductId">Edit</a></td>
+                            <td>
+                                <a class="btn btn-primary mr-2" asp-controller="product" asp-action="delete" asp-route-id="@product.ProductId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <p class="text-danger mb-0">There are no <b>product Items</b></p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 d-md-flex">
+        <div class="me-auto pt-1">
+            <a class="btn btn-primary" asp-controller="product" asp-action="add">Add Product</a>
+        </div>
+        <div class="pt-1">
+            @{
+                var pageListOpt = PagedListRenderOptions.Bootstrap4PageNumbersOnly;
+                pageListOpt.UlElementClasses = new[] { "pagination justify-content-end" };
+            }
+            <pager class="pager-container"
+                   list="@Model"
+                   options="@pageListOpt"
+                   asp-action="list" asp-controller="product"
+                   asp-route-page="@ViewBag.Page" asp-route-perpage="@ViewBag.PerPage" />
+        </div>
+    </div>
+</div>

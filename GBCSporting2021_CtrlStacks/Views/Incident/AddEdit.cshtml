@@ -1,0 +1,101 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Incident
+@{
+    var action = (string)ViewBag.Action;
+    ViewData["Title"] = action + " Technician";
+    var customers = (IEnumerable<Customer>)ViewBag.Customers;
+    var customerlist = customers.Select(x => new SelectListItem
+    {
+        Text = x.FirstName + " " + x.LastName,
+        Value = x.CustomerId + "",
+        Selected = Model.CustomerId != 0 && x.CustomerId == Model.CustomerId
+    }).ToList();
+    var products = (List<Product>)ViewBag.Products;
+    var technicians = (List<Technician>)ViewBag.Technicians;
+
+    if (action == "Add" && Model.DateOpened == new DateTime()) Model.DateOpened = DateTime.Now;
+}
+<h2>@action Incident</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-controller="incident" asp-action="save" autocomplete="off">
+            <input asp-for="IncidentId" value="@Model.IncidentId" type="hidden" />
+            <div class="mb-3 row">
+                <label for="TechnicianId" class="col-md-2 col-form-label">Technician</label>
+                <div class="col-md-10">
+                    <select asp-for="TechnicianId" class="form-select" asp-items="@(new SelectList(technicians, "TechnicianId", "Name"))" value="@Model.TechnicianId">
+                        <option value="">---Please select technician---</option>
+                    </select>
+                    <span asp-validation-for="TechnicianId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="CustomerId" class="col-md-2 col-form-label">Customer</label>
+                <div class="col-md-10">
+                    <select asp-for="CustomerId" class="form-select" asp-items="@(new SelectList(customerlist, "Value", "Text"))" value="@Model.CustomerId">
+                        <option value="">---Please select customer---</option>
+                    </select>
+                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="ProductId" class="col-md-2 col-form-label">Product</label>
+                <div class="col-md-10">
+                    <select asp-for="ProductId" class="form-select" asp-items="@(new SelectList(products, "ProductId", "Name"))" value="@Model.ProductId">
+                        <option value="">---Please select product---</option>
+                    </select>
+                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Title" class="col-md-2 col-form-label">Title</label>
+                <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control" asp-for="Title" value="@Model.Title">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="Description" class="col-md-2 col-form-label">Description</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" asp-for="Description">@Model.Description</textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="DateOpened" class="col-md-2 col-form-label">Date Opened</label>
+                <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control" asp-for="DateOpened" value="@string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.DateOpened).ToUpper()">
+                    <span asp-validation-for="DateOpened" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="DateClosed" class="col-md-2 col-form-label">Date Closed</label>
+                <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control" asp-for="DateClosed" value="@string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.DateClosed).ToUpper()">
+                    <span asp-validation-for="DateClosed" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary mr-2">Save</button>
+                    <a class="btn btn-primary" asp-controller="incident" asp-action="list">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section styles{
+    <link rel="stylesheet" href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+}
+@section scripts{
+    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#DateOpened,#DateClosed').datetimepicker({
+                format: "dd/mm/yyyy hh:ii P",
+                autoclose: true,
+                todayBtn: true,
+                showMeridian: true
+            });
+        });
+    </script>
+}

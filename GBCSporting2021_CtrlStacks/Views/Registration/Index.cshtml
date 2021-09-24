@@ -1,0 +1,111 @@
+﻿@using PagedList.Core
+@using PagedList.Core.Mvc
+@model IPagedList<Registration>
+@{
+    ViewData["Title"] = "Registrations";
+    var msgSuccess = (string)TempData["Message"];
+    var customer = (Customer)ViewBag.Customer;
+    var products = (List<Product>)ViewBag.Products;
+}
+@if (!string.IsNullOrEmpty(msgSuccess))
+{
+    <div class="msg-temp-success">
+        <h1 class="p-2">@msgSuccess</h1>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Customer: @(customer!=null ? string.Format("{0} {1}",customer.FirstName, customer.LastName): "No Customer")</h2>
+        <h2>Registration</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var registration in Model)
+                    {
+                        <tr>
+                            <td><p>@registration.Product.Name</p></td>
+                            <td class="text-right">
+                                <a class="btn btn-primary mr-2" asp-controller="Registration" asp-action="delete" asp-route-id="@registration.RegistrationId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <p class="text-danger mb-0">There are no <b>registered Items</b></p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 d-md-flex">
+        <div class="me-auto pt-1">
+            <a class="btn btn-primary" asp-controller="registration" asp-action="getcustomer">Switch Customer</a>
+        </div>
+        <div class="pt-1">
+            @{
+                var pageListOpt = PagedListRenderOptions.Bootstrap4PageNumbersOnly;
+                pageListOpt.UlElementClasses = new[] { "pagination justify-content-end" };
+            }
+            <pager class="pager-container"
+                   list="@Model"
+                   options="@pageListOpt"
+                   asp-action="index" asp-controller="registration"
+                   asp-route-id="@customer.CustomerId"
+                   asp-route-page="@ViewBag.Page" 
+                   asp-route-perpage="@ViewBag.PerPage" />
+        </div>
+    </div>
+</div>
+@if (customer != null && products.Any())
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Product</h2>
+            <form method="post" asp-controller="registration" asp-action="save" autocomplete="off" id="productregistration">
+                <select name="id" id="productId" class="form-select" asp-items="@(new SelectList(products, "ProductId", "Name"))" value="">
+                    <option value="">---Please select product---</option>
+                </select>
+                <span class="text-danger"></span>
+            </form>
+            <div class="mt-2">
+                <button type="button" class="btn btn-primary btn-register mr-2">Registration</button>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btn-register").click(function () {
+                var product = $("#productId").val();
+                if (product != "") {
+                    $("#productregistration").submit()
+                }
+                else {
+                    $("#productId").addClass("input-validation-error");
+                    $("#productId").next().addClass("field-validation-error");
+                    $(".field-validation-error").html("Product is required");
+                }
+            })
+        });
+    </script>
+}
+

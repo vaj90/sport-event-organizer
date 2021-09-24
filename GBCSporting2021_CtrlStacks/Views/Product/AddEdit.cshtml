@@ -1,0 +1,77 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Product
+@{
+    var action = (string)ViewBag.Action;
+    ViewData["Title"] = action + " Product";
+    if(action == "Add" && Model.ReleaseDate == new DateTime()) Model.ReleaseDate = DateTime.Now;
+}
+<h2>@action Product</h2>
+@if (Model != null) { 
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" asp-controller="product" asp-action="save" autocomplete="off">
+                <input asp-for="ProductId" value="@Model.ProductId" type="hidden" />
+                <div class="mb-3 row">
+                    <label for="Code" class="col-md-2 col-form-label">Code</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" asp-for="Code" value="@Model.Code">
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="Name" class="col-md-2 col-form-label">Name</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" asp-for="Name" value="@Model.Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="YearlyPrice" class="col-md-2 col-form-label">Yearly Price</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" asp-for="YearlyPrice" value="@Model.YearlyPrice">
+                        <span asp-validation-for="YearlyPrice" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="ReleaseDate" class="col-md-2 col-form-label">Release Date</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" asp-for="ReleaseDate" value="@string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.ReleaseDate).ToUpper()">
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary mr-2">Save</button>
+                        <a class="btn btn-primary" asp-controller="product" asp-action="list">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+@section styles{ 
+    <link rel="stylesheet" href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+}
+@section scripts{
+    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#YearlyPrice').on("keypress", function (e) {
+                var charCode = (e.which) ? e.which : event.keyCode
+                var val = $(this).val();
+                var isContainsDot = val.indexOf(".") != -1;
+                if (isContainsDot)
+                    if (charCode == 46) return false;
+                if (charCode == 46) return true;
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    return false;
+                return true;
+            })
+            $('#ReleaseDate').datetimepicker({
+                format: "dd/mm/yyyy hh:ii P",
+                autoclose: true,
+                todayBtn: true,
+                showMeridian: true
+            });
+        });
+    </script>
+}

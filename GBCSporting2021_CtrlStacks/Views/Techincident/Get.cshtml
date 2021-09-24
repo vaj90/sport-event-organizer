@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Technician>
+@{
+    ViewData["Title"] = "Get Technician";
+    var technicians = Model;
+}
+<h2>Technician</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3 row">
+            <div class="col-md-12 mb-2">
+                <select name="id" id="technicianid" class="form-select" asp-items="@(new SelectList(technicians, "TechnicianId", "Name"))" value="">
+                    <option value="">---Please select technician---</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary btn-select-technician mr-2">Select</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btn-select-technician").click(function () {
+                var technician = $("#technicianid").val();
+                if (technician != "") {
+                    window.location.href = "/techincident/list/" + technician;
+                }
+                else {
+                    $("#technicianid").addClass("input-validation-error");
+                    $("#technicianid").next().addClass("field-validation-error");
+                    $(".field-validation-error").html("Technician is required");
+                }
+            })
+        });
+    </script>
+}

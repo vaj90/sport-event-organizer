@@ -1,0 +1,74 @@
+﻿@using PagedList.Core
+@using PagedList.Core.Mvc
+@model IPagedList<Technician>
+@{
+    ViewData["Title"] = "Technician Manager";
+    var msgSuccess = (string)TempData["Message"];
+}
+@if (!string.IsNullOrEmpty(msgSuccess))
+{
+    <div class="msg-temp-success">
+        <h1 class="p-2">@msgSuccess</h1>
+    </div>
+}
+<h2>Technician Manager</h2>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var technician in Model)
+                    {
+                        <tr>
+                            <td><p>@technician.Name</p></td>
+                            <td><p>@technician.Email</p></td>
+                            <td><a href="tel:@technician.Phone">@technician.Phone</a></td>
+                            <td>
+                                <a class="btn btn-primary mr-2" asp-controller="technician" asp-action="edit" asp-route-id="@technician.TechnicianId">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary mr-2" asp-controller="technician" asp-action="delete" asp-route-id="@technician.TechnicianId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <p class="text-danger mb-0">There are no <b>technician Items</b></p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 d-md-flex">
+        <div class="me-auto pt-1">
+            <a class="btn btn-primary" asp-controller="technician" asp-action="add">Add Technician</a>
+        </div>
+        <div class="pt-1">
+            @{
+                var pageListOpt = PagedListRenderOptions.Bootstrap4PageNumbersOnly;
+                pageListOpt.UlElementClasses = new[] { "pagination justify-content-end" };
+            }
+            <pager class="pager-container"
+                   list="@Model"
+                   options="@pageListOpt"
+                   asp-action="list" asp-controller="technician"
+                   asp-route-page="@ViewBag.Page" asp-route-perpage="@ViewBag.PerPage" />
+        </div>
+    </div>
+</div>

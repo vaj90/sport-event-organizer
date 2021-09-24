@@ -1,0 +1,23 @@
+﻿@model GBCSporting2021_CtrlStacks.Models.Technician
+@{
+    ViewData["Title"] = "Delete Technician";
+}
+<h2>Delete Technician</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="technician" asp-action="deleteconfirm" method="post">
+            <input name="id" value="@Model.TechnicianId" type="hidden" />
+            <div class="mb-3 row">
+                <div class="col-md-12">
+                    <p>Do you really want to delete <b>@Model.Name</b>?</p>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-md-12 d-md-flex justify-content-md-end gap-2">
+                    <button type="submit" class="btn btn-primary mr-2">Yes</button>
+                    <a asp-controller="technician" asp-action="list" class="btn btn-primary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
